@@ -124,6 +124,10 @@ dependencies {
 
     //GMS Location
     implementation "com.google.android.gms:play-services-location:21.2.0"
+
+    //Accompanist Loading
+    implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
+
 }
 
 kapt {

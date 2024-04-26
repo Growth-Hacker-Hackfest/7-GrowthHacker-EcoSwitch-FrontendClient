@@ -1,5 +1,6 @@
 package com.example.ecoswitch.presentation.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -20,6 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.ecoswitch.R
+import com.example.ecoswitch.util.LoadingHandler
+import com.example.ecoswitch.util.Resource
+import com.example.ecoswitch.util.SnackbarHandler
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
@@ -27,6 +34,32 @@ fun LoginScreen(
     toRegister: () -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
+    val loginState = viewModel.loginState.collectAsState()
+
+    LaunchedEffect(key1 = loginState.value) {
+        when (loginState.value) {
+            is Resource.Loading -> {
+                LoadingHandler.show()
+            }
+
+            is Resource.Success -> {
+                loginState.value.message?.let { token ->
+                    viewModel.saveToken(token)
+                }
+
+                LoadingHandler.dismiss()
+                SnackbarHandler.showSnackbar("Berhasil Login")
+                delay(1500)
+                toHome()
+            }
+
+            is Resource.Error -> {
+                LoadingHandler.dismiss()
+            }
+
+            else -> {}
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -40,7 +73,7 @@ fun LoginScreen(
             contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 100.dp)
+                .padding(horizontal = 80.dp)
                 .padding(top = 64.dp, bottom = 160.dp)
         )
 
@@ -69,7 +102,14 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp),
-            onClick = { /*TODO*/ }
+            onClick = {
+                if (viewModel.email.value.isEmpty() || viewModel.password.value.isEmpty()) {
+                    SnackbarHandler.showSnackbar("Pastikan data diisi dengan benar")
+                    return@Button
+                }
+
+                viewModel.login()
+            }
         ) {
             Text(text = "Masuk")
         }

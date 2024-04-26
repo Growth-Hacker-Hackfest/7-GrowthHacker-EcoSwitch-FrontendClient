@@ -11,4 +11,12 @@ class MainViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
     val showBottomBar = mutableStateOf(false)
+
+    val loading = mutableStateOf(false)
+    val loadingWithMessage = mutableStateOf(false)
+    val loadingMessage = mutableStateOf("")
+    val showSnackbar = mutableStateOf(false)
+    val snackbarMessage = mutableStateOf("")
+    val snackbarAction = mutableStateOf({})
+    val snackbarActionMessage = mutableStateOf("")
 }
