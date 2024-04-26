@@ -11,6 +11,7 @@ class MainViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
     val showBottomBar = mutableStateOf(false)
+    val currentRoutes = mutableStateOf(MainNavRoutes.Splash.name)
 
     val loading = mutableStateOf(false)
     val loadingWithMessage = mutableStateOf(false)

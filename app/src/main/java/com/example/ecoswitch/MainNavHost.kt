@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.ecoswitch.presentation.dashboard.DashboardScreen
 import com.example.ecoswitch.presentation.login.LoginScreen
 import com.example.ecoswitch.presentation.splash.SplashScreen
 
@@ -55,6 +56,18 @@ fun MainNavHost(
         }
 
         composable(MainNavRoutes.Dashboard.name) {
+            //TODO Handle this later
+        }
+
+        composable(MainNavRoutes.Perangkat.name) {
+            //TODO Handle this later
+        }
+
+        composable(MainNavRoutes.EcoAssistant.name) {
+            //TODO Handle this later
+        }
+
+        composable(MainNavRoutes.Profil.name) {
             //TODO Handle this later
         }
     }

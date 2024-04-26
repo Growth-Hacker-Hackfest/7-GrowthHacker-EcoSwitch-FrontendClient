@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.ecoswitch.components.navbar.MyNavbar
 import com.example.ecoswitch.ui.theme.EcoSwitchTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -45,8 +46,12 @@ class MainActivity : ComponentActivity() {
 
             EcoSwitchTheme {
                 navController.addOnDestinationChangedListener { _, dest, _ ->
+                    mainViewModel.currentRoutes.value = dest.route ?: ""
+
                     when (dest.route) {
-                        //TODO Handle this later
+                        MainNavRoutes.Dashboard.name, MainNavRoutes.Perangkat.name, MainNavRoutes.EcoAssistant.name, MainNavRoutes.Profil.name -> mainViewModel.showBottomBar.value =
+                            true
+
                         else -> mainViewModel.showBottomBar.value = false
                     }
                 }
@@ -81,15 +86,15 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                LaunchedEffect(key1 = snackbarHostState.currentSnackbarData){
+                LaunchedEffect(key1 = snackbarHostState.currentSnackbarData) {
                     delay(3000)
                     mainViewModel.showSnackbar.value = false
                     mainViewModel.snackbarMessage.value = ""
                     mainViewModel.snackbarAction.value = {}
                 }
 
-                LaunchedEffect(key1 = mainViewModel.loadingWithMessage.value){
-                    if(mainViewModel.loadingWithMessage.value){
+                LaunchedEffect(key1 = mainViewModel.loadingWithMessage.value) {
+                    if (mainViewModel.loadingWithMessage.value) {
                         snackbarHostState.showSnackbar(mainViewModel.loadingMessage.value)
                     } else {
                         snackbarHostState.currentSnackbarData?.dismiss()
@@ -106,6 +111,14 @@ class MainActivity : ComponentActivity() {
                                 hostState = snackbarHostState
                             ) {
                                 Snackbar(snackbarData = it)
+                            }
+                        },
+                        bottomBar = {
+                            if (mainViewModel.showBottomBar.value) {
+                                MyNavbar(
+                                    onItemClick = { navController.navigate(it) },
+                                    currentRoute = mainViewModel.currentRoutes.value
+                                )
                             }
                         }
                     ) {
