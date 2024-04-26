@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.ecoswitch.presentation.add_perangkat.AddPerangkatScreen
 import com.example.ecoswitch.presentation.dashboard.DashboardScreen
 import com.example.ecoswitch.presentation.login.LoginScreen
 import com.example.ecoswitch.presentation.perangkat.PerangkatScreen
@@ -61,7 +62,11 @@ fun MainNavHost(
         }
 
         composable(MainNavRoutes.Perangkat.name) {
-            PerangkatScreen()
+            PerangkatScreen(
+                onAddClick = {
+                    navController.navigate(MainNavRoutes.AddPerangkat.name)
+                }
+            )
         }
 
         composable(MainNavRoutes.EcoAssistant.name) {
@@ -70,6 +75,10 @@ fun MainNavHost(
 
         composable(MainNavRoutes.Profil.name) {
             //TODO Handle this later
+        }
+
+        composable(MainNavRoutes.AddPerangkat.name){
+            AddPerangkatScreen()
         }
     }
 }

@@ -28,10 +28,12 @@ import androidx.compose.ui.unit.dp
 import com.example.ecoswitch.components.multi_screen.IotCard
 
 @Composable
-fun PerangkatScreen() {
+fun PerangkatScreen(
+    onAddClick: () -> Unit
+) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = onAddClick) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }

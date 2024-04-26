@@ -7,5 +7,6 @@ enum class MainNavRoutes {
     Dashboard,
     Perangkat,
     EcoAssistant,
-    Profil
+    Profil,
+    AddPerangkat
 }
