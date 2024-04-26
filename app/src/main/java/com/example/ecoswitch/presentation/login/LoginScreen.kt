@@ -43,7 +43,7 @@ fun LoginScreen(
             }
 
             is Resource.Success -> {
-                loginState.value.message?.let { token ->
+                loginState.value.data?.data?.let { token ->
                     viewModel.saveToken(token)
                 }
 
@@ -54,6 +54,9 @@ fun LoginScreen(
             }
 
             is Resource.Error -> {
+                loginState.value.message?.let {msg ->
+                    SnackbarHandler.showSnackbar("ERROR: $msg")
+                }
                 LoadingHandler.dismiss()
             }
 
