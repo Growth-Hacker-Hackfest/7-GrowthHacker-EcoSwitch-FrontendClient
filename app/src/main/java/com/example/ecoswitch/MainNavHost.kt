@@ -2,9 +2,12 @@ package com.example.ecoswitch
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.ecoswitch.presentation.add_perangkat.AddPerangkatScreen
+import com.example.ecoswitch.presentation.add_perangkat_detail.AddPerangkatDetailScreen
 import com.example.ecoswitch.presentation.dashboard.DashboardScreen
 import com.example.ecoswitch.presentation.login.LoginScreen
 import com.example.ecoswitch.presentation.perangkat.PerangkatScreen
@@ -77,8 +80,26 @@ fun MainNavHost(
             //TODO Handle this later
         }
 
-        composable(MainNavRoutes.AddPerangkat.name){
-            AddPerangkatScreen()
+        composable(MainNavRoutes.AddPerangkat.name) {
+            AddPerangkatScreen(
+                toDetail = { idPerangkat ->
+                    navController.navigate("${MainNavRoutes.AddPerangkatDetail.name}/$idPerangkat")
+                }
+            )
+        }
+
+        composable(
+            route = "${MainNavRoutes.AddPerangkatDetail.name}/{id_perangkat}",
+            arguments = listOf(
+                navArgument("id_perangkat") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val idPerangkat = it.arguments?.getString("id_perangkat") ?: ""
+            AddPerangkatDetailScreen(
+                idPerangkat = idPerangkat
+            )
         }
     }
 }
