@@ -12,7 +12,10 @@ class AddPerangkatDetailViewModel @Inject constructor(
 ) : ViewModel() {
     val namaPerangkat = mutableStateOf("")
     val jenisPerangkat = mutableStateOf("")
+    val expandJenisPerangkat = mutableStateOf(false)
     val dayaPerangkat = mutableStateOf("")
     val ruangan = mutableStateOf("")
+    val expandRuangan = mutableStateOf(false)
     val mode = mutableStateOf("")
+    val expandMode = mutableStateOf(false)
 }

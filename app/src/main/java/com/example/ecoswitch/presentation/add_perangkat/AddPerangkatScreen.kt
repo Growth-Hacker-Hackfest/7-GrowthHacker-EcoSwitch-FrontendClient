@@ -121,10 +121,10 @@ fun AddPerangkatScreen(
                 //LET THIS EMPTY
             },
             onCancelClick = {
-                //TODO Handle this later
+                viewModel.isScanQr.value = false
             },
             onSelesaiClick = {
-                //TODO Handle this later
+                viewModel.isScanQr.value = false
             }
         )
     } else {

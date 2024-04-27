@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ecoswitch.components.global.BasicDropdownField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,11 +27,32 @@ fun AddPerangkatDetailScreen(
     idPerangkat: String
 ) {
     val viewModel = hiltViewModel<AddPerangkatDetailViewModel>()
+    val jenises = listOf(
+        "AC Inverter",
+        "AC Non-Inverter",
+        "Kulkas Inverter",
+        "Kulks Non-Inverter",
+        "Televisi",
+        "Lampu"
+    )
+    val ruangans = listOf(
+        "Kamar Tidur",
+        "Ruang Tamu",
+        "Toilet",
+        "Dapur",
+        "Taman",
+        "Tempat Parkir",
+        "Ruang Tunggu"
+    )
+    val modes = listOf(
+        "Sensor Cahaya",
+        "Maps",
+        "Timer",
+        "Jadwal"
+    )
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text(text = "Pengaturan Perangkat") })
-        },
+        topBar = { TopAppBar(title = { Text(text = "Pengaturan Perangkat") }) },
         bottomBar = {
             BottomAppBar {
                 Button(
@@ -76,16 +99,30 @@ fun AddPerangkatDetailScreen(
             }
 
             item {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                BasicDropdownField(
                     value = viewModel.jenisPerangkat.value,
-                    onValueChange = {
-                        viewModel.jenisPerangkat.value = it
+                    expanded = viewModel.expandJenisPerangkat.value,
+                    onExpandChange = {
+                        viewModel.expandJenisPerangkat.value = it
                     },
                     label = {
                         Text(text = "Jenis Perangkat")
                     }
-                )
+                ) {
+                    jenises.forEach {
+                        item {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = it)
+                                },
+                                onClick = {
+                                    viewModel.jenisPerangkat.value = it
+                                    viewModel.expandJenisPerangkat.value = false
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
             item {
@@ -95,6 +132,9 @@ fun AddPerangkatDetailScreen(
                     onValueChange = {
                         viewModel.dayaPerangkat.value = it
                     },
+                    trailingIcon = {
+                        Text(text = "Watt")
+                    },
                     label = {
                         Text(text = "Daya Listrik Perangkat")
                     }
@@ -102,29 +142,57 @@ fun AddPerangkatDetailScreen(
             }
 
             item {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                BasicDropdownField(
                     value = viewModel.ruangan.value,
-                    onValueChange = {
-                        viewModel.ruangan.value = it
+                    expanded = viewModel.expandRuangan.value,
+                    onExpandChange = {
+                        viewModel.expandRuangan.value = it
                     },
                     label = {
                         Text(text = "Ruangan")
                     }
-                )
+                ) {
+                    ruangans.forEach {
+                        item {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = it)
+                                },
+                                onClick = {
+                                    viewModel.ruangan.value = it
+                                    viewModel.expandRuangan.value = false
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
             item {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                BasicDropdownField(
                     value = viewModel.mode.value,
-                    onValueChange = {
-                        viewModel.mode.value = it
+                    expanded = viewModel.expandMode.value,
+                    onExpandChange = {
+                        viewModel.expandMode.value = it
                     },
                     label = {
                         Text(text = "Mode")
                     }
-                )
+                ) {
+                    modes.forEach {
+                        item {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = it)
+                                },
+                                onClick = {
+                                    viewModel.mode.value = it
+                                    viewModel.expandMode.value = false
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
     }
