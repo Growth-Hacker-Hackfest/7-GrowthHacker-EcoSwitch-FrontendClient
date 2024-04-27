@@ -61,7 +61,7 @@ fun MainNavHost(
         }
 
         composable(MainNavRoutes.Dashboard.name) {
-            //TODO Handle this later
+            DashboardScreen()
         }
 
         composable(MainNavRoutes.Perangkat.name) {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -49,65 +50,7 @@ fun PerangkatScreen(
             item(
                 span = { GridItemSpan(maxCurrentLineSpan) }
             ) {
-                Column(
-                    modifier = Modifier.padding(top = 24.dp)
-                ) {
-                    Text(text = "Hai, Fulan!", style = MaterialTheme.typography.titleLarge)
-                    Text(
-                        text = "Selamat datang di EcoSwitch.",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
-
-            item(
-                span = { GridItemSpan(maxCurrentLineSpan) }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.LightGray)
-                )
-            }
-
-            item {
-                Card(
-                    modifier = Modifier.height(140.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(horizontal = 14.dp, vertical = 12.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Proyeksi Pemakaian Listrik Bulan Ini")
-                        Text(text = "N/A", style = MaterialTheme.typography.titleLarge)
-                    }
-                }
-            }
-
-            item {
-                Card(
-                    modifier = Modifier.height(140.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(horizontal = 14.dp, vertical = 12.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Proyeksi Biaya Listrik Bulan Ini")
-                        Text(text = "N/A", style = MaterialTheme.typography.titleLarge)
-                    }
-                }
-            }
-
-            item(
-                span = { GridItemSpan(maxCurrentLineSpan) }
-            ) {
-                Text(text = "Shortcut", style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier)
             }
 
             items(6) {
