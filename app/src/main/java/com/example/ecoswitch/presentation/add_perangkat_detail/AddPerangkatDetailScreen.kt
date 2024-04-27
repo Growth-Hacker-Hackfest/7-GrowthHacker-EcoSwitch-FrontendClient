@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailJadwal
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailMap
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailSensorCahaya
 import com.example.ecoswitch.components.global.BasicDropdownField
@@ -49,7 +50,7 @@ fun AddPerangkatDetailScreen(
     val modes = listOf(
         "Sensor Cahaya",
         "Maps",
-        "Timer",
+//        "Timer",
         "Jadwal"
     )
 
@@ -227,9 +228,32 @@ fun AddPerangkatDetailScreen(
                     }
                 }
 
-                "Timer" -> {}
+//                "Timer" -> {}
 
-                "Jadwal" -> {}
+                "Jadwal" -> {
+                    item {
+                        AddPerangkatDetailJadwal(
+                            selectedHari = viewModel.selectedHari,
+                            onHariChanged = { day, selected ->
+                                if (selected) {
+                                    if (!viewModel.selectedHari.any { it == day }) {
+                                        viewModel.selectedHari.add(day)
+                                    }
+                                } else {
+                                    viewModel.selectedHari.remove(day)
+                                }
+                            },
+                            start = viewModel.start.value,
+                            onStartChanged = {
+                                viewModel.start.value = it
+                            },
+                            end = viewModel.end.value,
+                            onEndChanged = {
+                                viewModel.end.value = it
+                            }
+                        )
+                    }
+                }
 
                 else -> {}
             }

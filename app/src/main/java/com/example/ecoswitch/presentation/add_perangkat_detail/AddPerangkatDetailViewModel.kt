@@ -1,5 +1,6 @@
 package com.example.ecoswitch.presentation.add_perangkat_detail
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.ecoswitch.data.Repository
@@ -25,4 +26,16 @@ class AddPerangkatDetailViewModel @Inject constructor(
     val satuan = mutableStateOf("")
     val long = mutableStateOf(.0)
     val lat = mutableStateOf(.0)
+
+    val start = mutableStateOf("")
+    val end = mutableStateOf("")
+    val selectedHari = mutableStateListOf(
+        "Senin",
+        "Selasa",
+        "Rabu",
+        "Kamis",
+        "Jumat",
+        "Sabtu",
+        "Minggu"
+    )
 }
