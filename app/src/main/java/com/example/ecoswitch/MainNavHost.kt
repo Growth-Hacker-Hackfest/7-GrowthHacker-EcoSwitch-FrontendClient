@@ -10,6 +10,7 @@ import com.example.ecoswitch.presentation.add_perangkat.AddPerangkatScreen
 import com.example.ecoswitch.presentation.add_perangkat_detail.AddPerangkatDetailScreen
 import com.example.ecoswitch.presentation.dashboard.DashboardScreen
 import com.example.ecoswitch.presentation.login.LoginScreen
+import com.example.ecoswitch.presentation.analisa.AnalisaScreen
 import com.example.ecoswitch.presentation.perangkat.PerangkatScreen
 import com.example.ecoswitch.presentation.splash.SplashScreen
 
@@ -38,8 +39,8 @@ fun MainNavHost(
                         }
                     }
                 },
-                toPengaturanAwal = {
-                    navController.navigate(MainNavRoutes.PengaturanAwal.name) {
+                toAnalisa = {
+                    navController.navigate(MainNavRoutes.Analisa.name) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
@@ -109,8 +110,8 @@ fun MainNavHost(
             )
         }
 
-        composable(MainNavRoutes.PengaturanAwal.name){
-            //TODO Hande this later
+        composable(MainNavRoutes.Analisa.name){
+            AnalisaScreen()
         }
     }
 }
