@@ -9,5 +9,5 @@ data class SinglePerangkatResponse(
     val daya_listrik: Long,
     val ruangan: String,
     val mode: String,
-    val config: SinglePerangkatConfigResponse
+//    val config: SinglePerangkatConfigResponse
 )

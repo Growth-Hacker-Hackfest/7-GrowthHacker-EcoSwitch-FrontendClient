@@ -1,5 +1,6 @@
 package com.example.ecoswitch.presentation.perangkat
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -75,7 +76,8 @@ fun PerangkatScreen(
                             checked = it.is_on == true,
                             onCheckedChange = {
                                 //TODO Handle this later
-                            }
+                            },
+                            is_receiver = it.mode == "Receiver"
                         )
                     }
                 }

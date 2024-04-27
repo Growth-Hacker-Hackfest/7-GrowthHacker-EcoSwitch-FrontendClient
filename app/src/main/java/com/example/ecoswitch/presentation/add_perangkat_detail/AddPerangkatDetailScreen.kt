@@ -28,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -41,15 +42,20 @@ import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailM
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailReceiver
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailSensorCahaya
 import com.example.ecoswitch.components.global.BasicDropdownField
+import com.example.ecoswitch.util.LoadingHandler
 import com.example.ecoswitch.util.MyLocationService
+import com.example.ecoswitch.util.Resource
+import com.example.ecoswitch.util.SnackbarHandler
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun AddPerangkatDetailScreen(
-    idPerangkat: String
+    idPerangkat: String,
+    onBack: () -> Unit
 ) {
     val viewModel = hiltViewModel<AddPerangkatDetailViewModel>()
     val permissions = rememberMultiplePermissionsState(
@@ -84,8 +90,32 @@ fun AddPerangkatDetailScreen(
         "Receiver"
     )
 
+    val createDeviceState = viewModel.createDeviceState.collectAsState()
+
     LaunchedEffect(key1 = true) {
         viewModel.getAllDeviceIot()
+    }
+
+    LaunchedEffect(key1 = createDeviceState.value) {
+        when (createDeviceState.value) {
+            is Resource.Loading -> {
+                LoadingHandler.show()
+            }
+
+            is Resource.Error -> {
+                LoadingHandler.dismiss()
+                SnackbarHandler.showSnackbar("Terjadi kesalahan, coba lagi nanti.")
+            }
+
+            is Resource.Success -> {
+                LoadingHandler.dismiss()
+                SnackbarHandler.showSnackbar("Data Berhasil ditambahkan")
+                delay(2000)
+                onBack()
+            }
+
+            else -> {}
+        }
     }
 
     if (viewModel.showPermissionDialog.value && !permissions.allPermissionsGranted) {
@@ -137,7 +167,11 @@ fun AddPerangkatDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        //TODO Here should be checking if any field is empty
+
+                        viewModel.createDeviceIot(idPerangkat)
+                    }
                 ) {
                     Icon(imageVector = Icons.Default.Save, contentDescription = "")
                     Text(text = "Simpan Perangkat")

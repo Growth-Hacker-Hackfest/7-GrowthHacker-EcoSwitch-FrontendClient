@@ -113,7 +113,11 @@ fun MainNavHost(
         ) {
             val idPerangkat = it.arguments?.getString("id_perangkat") ?: ""
             AddPerangkatDetailScreen(
-                idPerangkat = idPerangkat
+                idPerangkat = idPerangkat,
+                onBack = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                }
             )
         }
 

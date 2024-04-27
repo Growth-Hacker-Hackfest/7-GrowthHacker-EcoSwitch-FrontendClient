@@ -157,7 +157,8 @@ fun DashboardScreen() {
                         checked = it.is_on == true,
                         onCheckedChange = {
                             //TODO Handle this later
-                        }
+                        },
+                        is_receiver = it.mode == "Receiver"
                     )
                 }
             }

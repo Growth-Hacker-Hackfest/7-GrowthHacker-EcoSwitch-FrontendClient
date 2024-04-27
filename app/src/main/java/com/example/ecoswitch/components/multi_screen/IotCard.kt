@@ -18,6 +18,7 @@ fun IotCard(
     name: String,
     mode: String,
     info: String,
+    is_receiver: Boolean,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -36,7 +37,7 @@ fun IotCard(
                 Text(text = info, style = MaterialTheme.typography.titleSmall)
             }
 
-            Switch(checked = checked, onCheckedChange = onCheckedChange)
+            Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = is_receiver)
         }
     }
 }
