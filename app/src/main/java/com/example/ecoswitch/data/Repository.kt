@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.example.ecoswitch.model.request.auth.LoginRequest
 import com.example.ecoswitch.model.response.BaseResponse
 import com.example.ecoswitch.model.response.banner.SingleBannerResponse
+import com.example.ecoswitch.model.response.pengaturan_awal.CekPengaturanAwalResponse
 import com.example.ecoswitch.util.getResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -49,5 +50,11 @@ class Repository @Inject constructor(
         password: String
     ) {
         //TODO Handle this later
+    }
+
+    fun cekPengaturanAwal() = getResponse<BaseResponse<CekPengaturanAwalResponse>>(repository = this){
+        http.get("$BASE_URL/informasi-listrik/check-is-complete"){
+            header("Authorization", "Bearer ${getToken()}")
+        }
     }
 }

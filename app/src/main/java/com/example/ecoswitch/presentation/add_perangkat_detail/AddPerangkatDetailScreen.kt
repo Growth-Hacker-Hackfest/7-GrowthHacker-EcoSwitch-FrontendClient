@@ -1,9 +1,18 @@
 package com.example.ecoswitch.presentation.add_perangkat_detail
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.BottomAppBar
@@ -14,22 +23,39 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailJadwal
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailMap
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailSensorCahaya
 import com.example.ecoswitch.components.global.BasicDropdownField
+import com.example.ecoswitch.util.MyLocationService
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.location.LocationServices
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun AddPerangkatDetailScreen(
     idPerangkat: String
 ) {
     val viewModel = hiltViewModel<AddPerangkatDetailViewModel>()
+    val permissions = rememberMultiplePermissionsState(
+        permissions = listOf(
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    )
+    val context = LocalContext.current
     val jenises = listOf(
         "AC Inverter",
         "AC Non-Inverter",
@@ -53,6 +79,47 @@ fun AddPerangkatDetailScreen(
 //        "Timer",
         "Jadwal"
     )
+
+    if (viewModel.showPermissionDialog.value && !permissions.allPermissionsGranted) {
+        Dialog(
+            onDismissRequest = {
+                viewModel.showPermissionDialog.value = false
+            }
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.White)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(text = "Ijin harus dilakukan untuk menggunakan lokasi.Anda dapat ijinkan secara manual melalui setting.")
+                    Row {
+                        TextButton(
+                            onClick = {
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                val uri = Uri.fromParts("package", context.packageName, null)
+                                intent.setData(uri)
+                                context.startActivity(intent)
+                            }
+                        ) {
+                            Text(text = "Buka Setting")
+                        }
+
+                        if (permissions.shouldShowRationale) {
+                            Button(
+                                onClick = { permissions.launchMultiplePermissionRequest() }
+                            ) {
+                                Text(text = "Minta Ijin")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "Pengaturan Perangkat") }) },
@@ -189,6 +256,12 @@ fun AddPerangkatDetailScreen(
                                     Text(text = it)
                                 },
                                 onClick = {
+                                    if (it == "Maps") {
+                                        if (!permissions.allPermissionsGranted) {
+                                            viewModel.showPermissionDialog.value = true
+                                            return@DropdownMenuItem
+                                        }
+                                    }
                                     viewModel.mode.value = it
                                     viewModel.expandMode.value = false
                                 }
@@ -227,8 +300,6 @@ fun AddPerangkatDetailScreen(
                         )
                     }
                 }
-
-//                "Timer" -> {}
 
                 "Jadwal" -> {
                     item {

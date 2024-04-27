@@ -1,5 +1,6 @@
 package com.example.ecoswitch.presentation.splash
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,14 +20,19 @@ import com.example.ecoswitch.R
 @Composable
 fun SplashScreen(
     toLogin: () -> Unit,
-    toHome: () -> Unit
+    toHome: () -> Unit,
+    toPengaturanAwal: () -> Unit
 ) {
     val viewModel = hiltViewModel<SplashViewModel>()
 
     LaunchedEffect(key1 = true) {
-        viewModel.precheck { tokenAvailable ->
+        viewModel.precheck { tokenAvailable, complete ->
             if (tokenAvailable) {
-                toHome()
+                if (complete) {
+                    toHome()
+                } else {
+                    toPengaturanAwal()
+                }
             } else {
                 toLogin()
             }

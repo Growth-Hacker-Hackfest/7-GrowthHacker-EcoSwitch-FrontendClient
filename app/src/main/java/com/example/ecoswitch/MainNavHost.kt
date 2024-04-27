@@ -37,6 +37,13 @@ fun MainNavHost(
                             inclusive = true
                         }
                     }
+                },
+                toPengaturanAwal = {
+                    navController.navigate(MainNavRoutes.PengaturanAwal.name) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -100,6 +107,10 @@ fun MainNavHost(
             AddPerangkatDetailScreen(
                 idPerangkat = idPerangkat
             )
+        }
+
+        composable(MainNavRoutes.PengaturanAwal.name){
+            //TODO Hande this later
         }
     }
 }

@@ -38,4 +38,6 @@ class AddPerangkatDetailViewModel @Inject constructor(
         "Sabtu",
         "Minggu"
     )
+
+    val showPermissionDialog = mutableStateOf(false)
 }

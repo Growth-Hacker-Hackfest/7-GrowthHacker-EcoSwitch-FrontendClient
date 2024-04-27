@@ -4,6 +4,7 @@ enum class MainNavRoutes {
     Splash,
     Login,
     Register,
+    PengaturanAwal,
     Dashboard,
     Perangkat,
     EcoAssistant,
