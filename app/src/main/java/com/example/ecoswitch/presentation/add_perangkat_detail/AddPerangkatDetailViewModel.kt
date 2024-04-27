@@ -18,4 +18,11 @@ class AddPerangkatDetailViewModel @Inject constructor(
     val expandRuangan = mutableStateOf(false)
     val mode = mutableStateOf("")
     val expandMode = mutableStateOf(false)
+
+    val sensitivitas = mutableStateOf("")
+
+    val jarak = mutableStateOf("")
+    val satuan = mutableStateOf("")
+    val long = mutableStateOf(.0)
+    val lat = mutableStateOf(.0)
 }

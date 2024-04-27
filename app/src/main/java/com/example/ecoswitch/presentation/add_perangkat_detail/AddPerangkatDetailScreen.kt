@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailMap
+import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailSensorCahaya
 import com.example.ecoswitch.components.global.BasicDropdownField
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -193,6 +195,43 @@ fun AddPerangkatDetailScreen(
                         }
                     }
                 }
+            }
+
+            when (viewModel.mode.value) {
+                "Sensor Cahaya" -> {
+                    item {
+                        AddPerangkatDetailSensorCahaya(
+                            sensitivitas = viewModel.sensitivitas.value,
+                            onSensitivitasChanged = { viewModel.sensitivitas.value = it })
+                    }
+                }
+
+                "Maps" -> {
+                    item {
+                        AddPerangkatDetailMap(
+                            jarak = viewModel.jarak.value,
+                            onJarakChanged = {
+                                viewModel.jarak.value = it
+                            },
+                            satuan = viewModel.satuan.value,
+                            onSatuanChanged = {
+                                viewModel.satuan.value = it
+                            },
+                            long = viewModel.long.value,
+                            lat = viewModel.lat.value,
+                            onTitikLokasiChanged = { long, lat ->
+                                viewModel.long.value = long
+                                viewModel.lat.value = lat
+                            }
+                        )
+                    }
+                }
+
+                "Timer" -> {}
+
+                "Jadwal" -> {}
+
+                else -> {}
             }
         }
     }
