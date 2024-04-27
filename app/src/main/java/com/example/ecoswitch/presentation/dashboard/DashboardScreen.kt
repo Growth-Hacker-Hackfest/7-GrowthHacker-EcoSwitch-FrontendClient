@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,9 +43,11 @@ import kotlinx.coroutines.delay
 fun DashboardScreen() {
     val viewModel = hiltViewModel<DashboardViewModel>()
     val bannerState = viewModel.bannerState.collectAsState()
+    val devicesState = viewModel.devicesState.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.getAllBanner()
+        viewModel.getAllDeviceIot()
     }
 
     LazyVerticalGrid(
@@ -144,13 +147,20 @@ fun DashboardScreen() {
             Text(text = "Shortcut", style = MaterialTheme.typography.titleMedium)
         }
 
-        items(6) {
-            IotCard(
-                name = "alksdjfls",
-                mode = "laksjdkljasd",
-                info = "Main",
-                checked = true,
-                onCheckedChange = {})
+        if (devicesState.value is Resource.Success) {
+            devicesState.value.data?.data?.let {
+                items(it) {
+                    IotCard(
+                        name = it.name,
+                        mode = it.mode,
+                        info = "-",
+                        checked = it.is_on == true,
+                        onCheckedChange = {
+                            //TODO Handle this later
+                        }
+                    )
+                }
+            }
         }
     }
 }

@@ -3,10 +3,12 @@ package com.example.ecoswitch.data
 import android.content.SharedPreferences
 import com.example.ecoswitch.model.request.auth.LoginRequest
 import com.example.ecoswitch.model.request.eco_assistant.ChatbotRequest
+import com.example.ecoswitch.model.request.perangkat.CreatePerangkatRequest
 import com.example.ecoswitch.model.response.BaseResponse
 import com.example.ecoswitch.model.response.banner.SingleBannerResponse
 import com.example.ecoswitch.model.response.eco_assistant.SingleChatbotHistoryResponse
 import com.example.ecoswitch.model.response.pengaturan_awal.CekPengaturanAwalResponse
+import com.example.ecoswitch.model.response.perangkat.SinglePerangkatResponse
 import com.example.ecoswitch.util.getResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -29,7 +31,7 @@ class Repository @Inject constructor(
 
     fun getToken() = encPref.getString("token", "") ?: ""
 
-    fun getAllBanner() = getResponse<BaseResponse<List<SingleBannerResponse>>>(repository = this){
+    fun getAllBanner() = getResponse<BaseResponse<List<SingleBannerResponse>>>(repository = this) {
         http.get("${BASE_URL}/banner") {
             header("Authorization", "Bearer ${getToken()}")
         }
@@ -54,25 +56,44 @@ class Repository @Inject constructor(
         //TODO Handle this later
     }
 
-    fun cekPengaturanAwal() = getResponse<BaseResponse<CekPengaturanAwalResponse>>(repository = this){
-        http.get("$BASE_URL/informasi-listrik/check-is-complete"){
-            header("Authorization", "Bearer ${getToken()}")
+    fun cekPengaturanAwal() =
+        getResponse<BaseResponse<CekPengaturanAwalResponse>>(repository = this) {
+            http.get("$BASE_URL/informasi-listrik/check-is-complete") {
+                header("Authorization", "Bearer ${getToken()}")
+            }
         }
-    }
 
     fun requestChatbot(
         prompt: String
-    ) = getResponse<BaseResponse<String>>(repository = this){
-        http.post("$BASE_URL/chat"){
+    ) = getResponse<BaseResponse<String>>(repository = this) {
+        http.post("$BASE_URL/chat") {
             header("Authorization", "Bearer ${getToken()}")
             setBody(ChatbotRequest(prompt))
             contentType(ContentType.Application.Json)
         }
     }
 
-    fun getAllChatbotHistory() = getResponse<BaseResponse<List<SingleChatbotHistoryResponse>>>(repository = this){
-        http.get("$BASE_URL/chat"){
+    fun getAllChatbotHistory() =
+        getResponse<BaseResponse<List<SingleChatbotHistoryResponse>>>(repository = this) {
+            http.get("$BASE_URL/chat") {
+                header("Authorization", "Bearer ${getToken()}")
+            }
+        }
+
+    fun getAllDeviceIot() =
+        getResponse<BaseResponse<List<SinglePerangkatResponse>>>(repository = this) {
+            http.get("$BASE_URL/device-iot") {
+                header("Authorization", "Bearer ${getToken()}")
+            }
+        }
+
+    fun createDeviceIot(
+        body: CreatePerangkatRequest
+    ) = getResponse<BaseResponse<Nothing>>(repository = this) {
+        http.post("$BASE_URL/device-iot") {
             header("Authorization", "Bearer ${getToken()}")
+            setBody(body)
+            contentType(ContentType.Application.Json)
         }
     }
 }

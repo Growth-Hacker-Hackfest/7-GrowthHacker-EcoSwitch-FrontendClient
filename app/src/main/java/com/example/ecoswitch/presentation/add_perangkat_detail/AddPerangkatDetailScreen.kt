@@ -38,6 +38,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailJadwal
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailMap
+import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailReceiver
 import com.example.ecoswitch.components.add_perangkat_detail.AddPerangkatDetailSensorCahaya
 import com.example.ecoswitch.components.global.BasicDropdownField
 import com.example.ecoswitch.util.MyLocationService
@@ -79,8 +80,13 @@ fun AddPerangkatDetailScreen(
         "Sensor Cahaya",
         "Maps",
 //        "Timer",
-        "Jadwal"
+        "Jadwal",
+        "Receiver"
     )
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getAllDeviceIot()
+    }
 
     if (viewModel.showPermissionDialog.value && !permissions.allPermissionsGranted) {
         Dialog(
@@ -326,6 +332,18 @@ fun AddPerangkatDetailScreen(
                             end = viewModel.end.value,
                             onEndChanged = {
                                 viewModel.end.value = it
+                            }
+                        )
+                    }
+                }
+
+                "Receiver" -> {
+                    item {
+                        AddPerangkatDetailReceiver(
+                            listReceiver = viewModel.listSensor,
+                            selected = viewModel.selectedSensor.value,
+                            onSelectedChange = { id, item ->
+                                viewModel.selectedSensor.value = item
                             }
                         )
                     }
