@@ -3,11 +3,13 @@ package com.example.ecoswitch.data
 import android.content.SharedPreferences
 import com.example.ecoswitch.model.request.auth.LoginRequest
 import com.example.ecoswitch.model.request.eco_assistant.ChatbotRequest
+import com.example.ecoswitch.model.request.pengaturan_awal.PengaturanAwalRequest
 import com.example.ecoswitch.model.request.perangkat.CreatePerangkatRequest
 import com.example.ecoswitch.model.response.BaseResponse
 import com.example.ecoswitch.model.response.banner.SingleBannerResponse
 import com.example.ecoswitch.model.response.eco_assistant.SingleChatbotHistoryResponse
 import com.example.ecoswitch.model.response.pengaturan_awal.CekPengaturanAwalResponse
+import com.example.ecoswitch.model.response.pengaturan_awal.PengaturanAwalResponse
 import com.example.ecoswitch.model.response.perangkat.SinglePerangkatResponse
 import com.example.ecoswitch.util.getResponse
 import io.ktor.client.HttpClient
@@ -91,6 +93,16 @@ class Repository @Inject constructor(
         body: CreatePerangkatRequest
     ) = getResponse<BaseResponse<Nothing>>(repository = this) {
         http.post("$BASE_URL/device-iot") {
+            header("Authorization", "Bearer ${getToken()}")
+            setBody(body)
+            contentType(ContentType.Application.Json)
+        }
+    }
+
+    fun sendPengaturanAwal(
+        body: PengaturanAwalRequest
+    ) = getResponse<BaseResponse<PengaturanAwalResponse>>(repository = this){
+        http.post("$BASE_URL/informasi-listrik"){
             header("Authorization", "Bearer ${getToken()}")
             setBody(body)
             contentType(ContentType.Application.Json)

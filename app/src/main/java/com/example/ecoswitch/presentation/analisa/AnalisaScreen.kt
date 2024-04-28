@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -86,7 +88,9 @@ fun AnalisaScreen() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
-                            onClick = { /*TODO*/ }
+                            onClick = {
+                                viewModel.sendRequest()
+                            }
                         ) {
                             Text(text = "Simpan dan Analisa")
                         }
@@ -425,6 +429,37 @@ fun AnalisaScreen() {
                         model = R.drawable.img_analisa_sukses,
                         contentDescription = ""
                     )
+
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            verticalArrangement = Arrangement.spacedBy(32.dp)
+                        ) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = "Hasil Analisis",
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center
+                            )
+
+                            analisaState.value.data?.data?.response_ai?.let {
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(18.dp)
+                                ) {
+                                    Text(text = it.co2)
+                                    Text(text = it.total_kwh)
+                                    Text(text = it.biaya)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -86,6 +86,7 @@ fun AddPerangkatDetailScreen(
         "Sensor Cahaya",
         "Maps",
 //        "Timer",
+        "Kamera",
         "Jadwal",
         "Receiver"
     )

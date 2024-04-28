@@ -41,17 +41,11 @@ fun MainNavHost(
                     }
                 },
                 toAnalisa = {
-                    navController.navigate(MainNavRoutes.Dashboard.name) {
+                    navController.navigate(MainNavRoutes.Analisa.name) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
                     }
-
-//                    navController.navigate(MainNavRoutes.Analisa.name) {
-//                        popUpTo(navController.graph.id) {
-//                            inclusive = true
-//                        }
-//                    }
                 }
             )
         }
